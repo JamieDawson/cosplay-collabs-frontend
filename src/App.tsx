@@ -1,35 +1,32 @@
 import React from "react";
 import "./App.css";
 import CreateAdForm from "./Components/CreateAdForm/CreateAdForm.tsx";
-import { InstagramEmbed } from "react-social-media-embed";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Components/Home/Home.tsx";
+import LocationsMapper from "./Components/LocationsMapper/LocationsMapper.component.tsx";
+import InstagramComponent from "./Components/InstagramComponent/InstagramComponent.component.tsx";
 import LocationDetails from "./Components/LocationDetails/LocationDetails.tsx";
+import NavBar from "./Components/NavBar/NavBar.component.tsx";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Cosplay Collabs</h1>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <InstagramEmbed
-            url="https://www.instagram.com/p/CUbHfhpswxt/"
-            width={328}
-            height={382}
-          />
-        </div>
-        <CreateAdForm />
-        <Router>
+    <Router>
+      <NavBar />
+
+      <div className="App">
+        <header className="App-header">
+          <h1>Cosplay Collabs</h1>
+          <InstagramComponent />
+          <CreateAdForm />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<LocationsMapper />} />
             <Route
               path="/places/:country/:state/:city"
               element={<LocationDetails />}
             />
           </Routes>
-        </Router>
-      </header>
-    </div>
+        </header>
+      </div>
+    </Router>
   );
 }
 

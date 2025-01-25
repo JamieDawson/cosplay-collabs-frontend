@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { locationData } from "../../Data/locations.ts";
 
-const Home: React.FC = () => {
+const LocationsMapper: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Locations</h1>
@@ -33,4 +33,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default LocationsMapper;
