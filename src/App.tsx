@@ -1,18 +1,16 @@
-import React from "react";
 import "./App.css";
-import CreateAdForm from "./Components/CreateAdForm/CreateAdForm.tsx";
+import CreateAdForm from "./Components/CreateAdForm/CreateAdForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LocationsMapper from "./Components/LocationsMapper/LocationsMapper.component.tsx";
-import InstagramComponent from "./Components/InstagramComponent/InstagramComponent.component.tsx";
-import LocationDetails from "./Components/LocationDetails/LocationDetails.tsx";
-import NavBar from "./Components/NavBar/NavBar.component.tsx";
+import LocationsMapper from "./Components/LocationsMapper/LocationsMapper.component";
+import InstagramComponent from "./Components/InstagramComponent/InstagramComponent.component";
+import LocationDetails from "./Components/LocationDetails/LocationDetails";
+import NavBar from "./Components/NavBar/NavBar.component";
 
 function App() {
   return (
-    <Router>
-      <NavBar />
-
-      <div className="App">
+    <div className="App">
+      <Router>
+        <NavBar />
         <header className="App-header">
           <h1>Cosplay Collabs</h1>
           <InstagramComponent />
@@ -25,8 +23,8 @@ function App() {
             />
           </Routes>
         </header>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 

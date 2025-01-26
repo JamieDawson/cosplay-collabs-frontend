@@ -1,6 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { locationData } from "../../Data/locations.ts";
+import { locationData } from "../../Data/locations";
 
 const LocationsMapper: React.FC = () => {
   return (

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { locationData } from "../../Data/locations.ts";
+import { useState } from "react";
+import { locationData } from "../../Data/locations";
 import "./CreateAdForm.css";
 
 const CreateAdForm: React.FC = () => {
@@ -61,13 +61,42 @@ const CreateAdForm: React.FC = () => {
 
   // Get dynamic options based on selections
   const countryOptions = Object.keys(locationData.countries);
+
+  // Type guard to narrow down the type of locationData.countries
+  const isCountryValid = (
+    country: string | number | symbol,
+    countries: (typeof locationData)["countries"]
+  ): country is keyof typeof countries => {
+    return typeof country === "string" && country in countries;
+  };
+
+  // Safely access state options
   const stateOptions =
-    formData.country && locationData.countries[formData.country]
-      ? Object.keys(locationData.countries[formData.country].states)
+    formData.country && formData.country in locationData.countries
+      ? Object.keys(
+          (
+            locationData.countries as {
+              [key: string]: { states: Record<string, string[]> };
+            }
+          )[formData.country].states
+        )
       : [];
+
   const cityOptions =
-    formData.state && formData.country
-      ? locationData.countries[formData.country].states[formData.state]
+    formData.state &&
+    formData.country &&
+    formData.country in locationData.countries &&
+    formData.state in
+      (
+        locationData.countries as {
+          [key: string]: { states: Record<string, string[]> };
+        }
+      )[formData.country].states
+      ? (
+          locationData.countries as {
+            [key: string]: { states: Record<string, string[]> };
+          }
+        )[formData.country].states[formData.state]
       : [];
 
   return (
