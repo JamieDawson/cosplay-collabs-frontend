@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import LocationRoutes from "../LocationRoutes/LocationRoutes.component";
 import styles from "../../../src/Components/NavBar/NavBar.module.css";
 
 const NavBar: React.FC = () => {
@@ -32,9 +31,6 @@ const NavBar: React.FC = () => {
           </li>
         </ul>
       </nav>
-
-      {/* Routing logic moved to its own component */}
-      <LocationRoutes />
     </>
   );
 };
