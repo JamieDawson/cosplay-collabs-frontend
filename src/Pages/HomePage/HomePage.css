@@ -1,0 +1,32 @@
+/* HomePage.css */
+
+/* Container for the Instagram grid */
+.instagram-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centers content horizontally */
+  gap: 20px; /* Space between the Instagram posts */
+  padding: 20px; /* Add padding around the grid */
+}
+
+/* Individual Instagram post */
+.instagram-item {
+  flex: 1 1 calc(33.333% - 20px); /* Ensure three columns */
+  max-width: calc(33.333% - 20px); /* Prevent from stretching beyond a third */
+  box-sizing: border-box; /* Includes padding and border in width calculation */
+}
+
+/* Add responsiveness for smaller screens */
+@media (max-width: 768px) {
+  .instagram-item {
+    flex: 1 1 calc(50% - 20px); /* Two columns on medium screens */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .instagram-item {
+    flex: 1 1 100%; /* Single column on small screens */
+    max-width: 100%;
+  }
+}

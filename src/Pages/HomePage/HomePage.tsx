@@ -1,9 +1,9 @@
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
-//import "./HomePage.css";
+import "./HomePage.css";
 
 const HomePage: React.FC = () => {
   return (
-    <div>
+    <div className="instagram-grid">
       <InstagramComponent />
       <InstagramComponent />
       <InstagramComponent />
