@@ -1,37 +1,35 @@
 import { Link } from "react-router-dom";
-import styles from "../../../src/Components/NavBar/NavBar.module.css";
+import "./NavBar.css";
 
 const NavBar: React.FC = () => {
   return (
-    <>
-      <nav className={styles.navbar}>
-        <div className={styles.logo}>
-          <Link to="/">MySite</Link>
-        </div>
-        <ul className={styles.navLinks}>
-          <li>
-            <Link to="/" className={styles.navLink}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" className={styles.navLink}>
-              About
-            </Link>
-          </li>
-          <li>
-            <Link to="/add-post" className={styles.navLink}>
-              Add Post
-            </Link>
-          </li>
-          <li>
-            <Link to="/places" className={styles.navLink}>
-              Places
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </>
+    <nav className="navbar">
+      <div className="logo">
+        <Link to="/">Cosplay Collabs</Link>
+      </div>
+      <ul className="nav-links">
+        <li>
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link to="/about" className="nav-link">
+            About
+          </Link>
+        </li>
+        <li>
+          <Link to="/add-post" className="nav-link">
+            Add Post
+          </Link>
+        </li>
+        <li>
+          <Link to="/places" className="nav-link">
+            Places
+          </Link>
+        </li>
+      </ul>
+    </nav>
   );
 };
 

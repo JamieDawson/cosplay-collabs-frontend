@@ -2,7 +2,7 @@ import { InstagramEmbed } from "react-social-media-embed";
 
 const InstagramComponent: React.FC = () => {
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div>
       <InstagramEmbed
         url="https://www.instagram.com/p/CUbHfhpswxt/"
         width={328}
