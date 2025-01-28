@@ -7,13 +7,58 @@
   justify-content: center; /* Centers content horizontally */
   gap: 20px; /* Space between the Instagram posts */
   padding: 20px; /* Add padding around the grid */
+  box-sizing: border-box; /* Ensure padding is included in the total size */
+  background-color: rgb(171, 171, 249);
+  max-width: 1200px; /* Optional: Set a maximum width for the container */
+  margin: 20px auto; /* Center the grid horizontally on the page */
 }
 
 /* Individual Instagram post */
 .instagram-item {
   flex: 1 1 calc(33.333% - 20px); /* Ensure three columns */
-  max-width: calc(33.333% - 20px); /* Prevent from stretching beyond a third */
+  min-width: calc(33.333% - 20px); /* Prevent from stretching beyond a third */
   box-sizing: border-box; /* Includes padding and border in width calculation */
+  background-color: white; /* Separate background for each post */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px; /* Add rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+}
+
+/* Titles and descriptions within Instagram items */
+.instagram-item-title {
+  max-width: 330px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.instagram-item-description {
+  max-width: 330px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.instagram-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Buttons for tags */
+.instagram-item-tags button {
+  padding: 5px 10px;
+  border: none;
+  background-color: rgb(220, 220, 220);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.instagram-item-tags button:hover {
+  background-color: rgb(171, 171, 249);
+  color: white;
 }
 
 /* Add responsiveness for smaller screens */
