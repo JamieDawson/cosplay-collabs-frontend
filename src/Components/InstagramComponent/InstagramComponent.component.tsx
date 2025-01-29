@@ -5,8 +5,8 @@ const InstagramComponent: React.FC = () => {
     <div className="instagram-item">
       <InstagramEmbed
         url="https://www.instagram.com/p/CUbHfhpswxt/"
-        width={330}
-        height={380}
+        // width={330}
+        // height={380}
       />
       <div className="instagram-item-title">
         Batman cosplayer looking for Robin Cosplayer to team up

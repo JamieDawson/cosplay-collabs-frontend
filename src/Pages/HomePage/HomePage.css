@@ -5,7 +5,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center; /* Centers content horizontally */
-  gap: 20px; /* Space between the Instagram posts */
+  gap: 30px; /* Space between the Instagram posts */
   padding: 20px; /* Add padding around the grid */
   box-sizing: border-box; /* Ensure padding is included in the total size */
   background-color: rgb(171, 171, 249);
@@ -14,18 +14,32 @@
 }
 
 /* Individual Instagram post */
-.instagram-item {
-  flex: 1 1 calc(33.333% - 20px); /* Ensure three columns */
-  min-width: calc(33.333% - 20px); /* Prevent from stretching beyond a third */
-  box-sizing: border-box; /* Includes padding and border in width calculation */
-  background-color: white; /* Separate background for each post */
+/* .instagram-item {
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: calc(33.333% - 20px);
+  box-sizing: border-box;
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border-radius: 10px; /* Add rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} */
+
+.instagram-item {
+  flex: 1 1 calc(33.333% - 20px); /* Three columns */
+  min-width: 330px; /* Ensure it doesn't shrink too much */
+  min-height: 450px; /* Ensure enough height */
+  overflow: hidden; /* Prevent content from overflowing */
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
 }
 
 /* Titles and descriptions within Instagram items */
@@ -50,6 +64,7 @@
 /* Buttons for tags */
 .instagram-item-tags button {
   padding: 5px 10px;
+  margin: 10px 10px;
   border: none;
   background-color: rgb(220, 220, 220);
   border-radius: 5px;
@@ -66,6 +81,13 @@
   .instagram-item {
     flex: 1 1 calc(50% - 20px); /* Two columns on medium screens */
     max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 746px) {
+  .instagram-item-tags button {
+    padding: 5px 10px;
+    margin: 10px 5px;
   }
 }
 
