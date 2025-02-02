@@ -16,8 +16,8 @@ const InstagramComponent: React.FC = () => {
         cosplayer who dreses as Robin!
       </div>
       <div className="instagram-item-tags">
-        <button>Batman</button> <button>Robin</button> <button>DC</button>{" "}
-        <button>Dark Knight</button>
+        <button>The number one Batman</button> <button>Robin</button>{" "}
+        <button>DC</button> <button>Dark Knight</button>
       </div>
     </div>
   );
