@@ -1,23 +1,43 @@
 import { InstagramEmbed } from "react-social-media-embed";
 
-const InstagramComponent: React.FC = (ad) => {
+interface Ad {
+  _id: string;
+  // Add other properties here
+}
+
+interface InstagramComponentProps {
+  key: string;
+  ad: Ad;
+}
+
+interface Ad {
+  id: number;
+  user_id: string;
+  title: string;
+  description: string;
+  instagram_post_url: string;
+  keywords: string[];
+}
+
+interface InstagramComponentProps {
+  ad: Ad;
+}
+
+const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
+  console.log("Rendering ad:", ad);
+
   return (
     <div className="instagram-item">
-      <InstagramEmbed
-        url="https://www.instagram.com/p/CUbHfhpswxt/"
-        // width={330}
-        // height={380}
-      />
-      <div className="instagram-item-title">
-        Batman cosplayer looking for Robin Cosplayer to team up
-      </div>
-      <div className="instagram-item-description">
-        I'm a Batman cosplayer based in CA and I'd love to team up with a
-        cosplayer who dreses as Robin!
-      </div>
+      <InstagramEmbed url={ad.instagram_post_url} />
+
+      <div className="instagram-item-title">{ad.title}</div>
+
+      <div className="instagram-item-description">{ad.description}</div>
+
       <div className="instagram-item-tags">
-        <button>The number one Batman</button> <button>Robin</button>{" "}
-        <button>DC</button> <button>Dark Knight</button>
+        {ad.keywords.map((keyword, index) => (
+          <button key={index}>{keyword}</button>
+        ))}
       </div>
     </div>
   );
