@@ -1,6 +1,6 @@
 import { InstagramEmbed } from "react-social-media-embed";
 
-const InstagramComponent: React.FC = () => {
+const InstagramComponent: React.FC = (ad) => {
   return (
     <div className="instagram-item">
       <InstagramEmbed
