@@ -34,16 +34,8 @@
   }
 }
 
-/* 2 columns at 768px */
-@media (max-width: 768px) {
-  .instagram-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 700px; /* Keeps posts at a consistent size */
-  }
-}
-
-/* 1 column layout at 700px */
-@media (max-width: 700px) {
+/* 1 column layout at 835px */
+@media (max-width: 835px) {
   .instagram-grid {
     grid-template-columns: 1fr; /* Stack posts in a single column */
     grid-auto-flow: row; /* Ensure normal vertical stacking */
