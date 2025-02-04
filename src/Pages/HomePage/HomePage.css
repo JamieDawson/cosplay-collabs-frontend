@@ -2,98 +2,59 @@
 
 /* Container for the Instagram grid */
 .instagram-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Centers content horizontally */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Default: 3 columns */
   gap: 30px; /* Space between the Instagram posts */
-  padding: 20px; /* Add padding around the grid */
-  box-sizing: border-box; /* Ensure padding is included in the total size */
-  background-color: rgb(171, 171, 249);
-  max-width: 1200px; /* Optional: Set a maximum width for the container */
-  margin: 20px auto; /* Center the grid horizontally on the page */
-}
-
-/* Individual Instagram post */
-/* .instagram-item {
-  flex: 1 1 calc(33.333% - 20px);
-  min-width: calc(33.333% - 20px);
-  box-sizing: border-box;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-} */
+  box-sizing: border-box;
+  background-color: rgb(171, 171, 249);
+  max-width: 1200px;
+  margin: 20px auto; /* Center the grid horizontally */
+}
 
+/* Instagram item styling */
 .instagram-item {
-  flex: 1 1 calc(33.333% - 20px); /* Three columns */
-  min-width: 330px; /* Ensure it doesn't shrink too much */
-  min-height: 450px; /* Ensure enough height */
-  overflow: hidden; /* Prevent content from overflowing */
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
-}
-
-/* Titles and descriptions within Instagram items */
-.instagram-item-title {
-  max-width: 330px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.instagram-item-description {
-  max-width: 330px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.instagram-item-tags {
+  min-height: 450px; /* Ensures posts don't shrink */
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
 }
 
-/* Buttons for tags */
-.instagram-item-tags button {
-  padding: 5px 10px;
-  margin: 10px 10px;
-  border: none;
-  background-color: rgb(220, 220, 220);
-  border-radius: 5px;
-  cursor: pointer;
+/* Make grid only allow 2 rows when the screen is at max 1230px */
+@media (max-width: 1230px) {
+  .instagram-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(450px, auto); /* Maintain item height */
+    max-height: calc(450px * 2 + 30px); /* Allow only 2 rows */
+    overflow: hidden;
+  }
 }
 
-.instagram-item-tags button:hover {
-  background-color: rgb(171, 171, 249);
-  color: white;
+/* 2 columns at 1240px */
+@media (max-width: 1240px) {
+  .instagram-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-height: none; /* Remove row limit */
+  }
 }
 
-/* Add responsiveness for smaller screens */
+/* 2 columns at 768px */
 @media (max-width: 768px) {
-  .instagram-item {
-    flex: 1 1 calc(50% - 20px); /* Two columns on medium screens */
-    max-width: calc(50% - 20px);
+  .instagram-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 746px) {
-  .instagram-item-tags button {
-    padding: 5px 10px;
-    margin: 10px 5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .instagram-item {
-    flex: 1 1 100%; /* Single column on small screens */
-    max-width: 100%;
+/* 1 column layout at 700px */
+@media (max-width: 700px) {
+  .instagram-grid {
+    grid-template-columns: 1fr; /* Stack posts in a single column */
+    grid-auto-flow: row; /* Ensure normal vertical stacking */
+    max-height: none; /* Let it expand naturally */
+    overflow: visible; /* No overflow issues */
   }
 }

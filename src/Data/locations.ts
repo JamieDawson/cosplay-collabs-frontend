@@ -14,3 +14,5 @@ export const locationData = {
     },
   },
 };
+
+//USA, CA, San Francisco
