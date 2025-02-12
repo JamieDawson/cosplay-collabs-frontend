@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LoginButton from "../Auth0/LoginButton/LoginButton.component";
 import "./NavBar.css";
 
 const NavBar: React.FC = () => {
@@ -8,6 +9,8 @@ const NavBar: React.FC = () => {
         <Link to="/">Cosplay Collabs</Link>
       </div>
       <ul className="nav-links">
+        <LoginButton />
+
         <li>
           <Link to="/" className="nav-link">
             Home
