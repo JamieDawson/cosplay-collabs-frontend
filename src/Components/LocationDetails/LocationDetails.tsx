@@ -33,10 +33,10 @@ const LocationDetails: React.FC = () => {
         );
         const data = await response.json();
 
-        console.log("Fetched ads data:", data); // Log the entire response
+        //  console.log("Fetched ads data:", data); // Log the entire response
 
         if (data.success) {
-          console.log("Ads list:", data.data); // Log only the ads array
+          //  console.log("Ads list:", data.data); // Log only the ads array
           setAds(data.data);
         }
       } catch (error) {
@@ -45,12 +45,6 @@ const LocationDetails: React.FC = () => {
     };
 
     fetchAds();
-  }, []);
-
-  console.log("Component rendered"); // This should appear every render
-
-  useEffect(() => {
-    console.log("WORK");
   }, []);
 
   return (

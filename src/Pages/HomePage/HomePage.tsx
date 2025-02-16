@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
+
 import "./HomePage.css";
 
 interface Ad {
@@ -28,7 +29,7 @@ const HomePage: React.FC = () => {
         const data = await response.json();
 
         if (data.success) {
-          console.log("Fetched ads:", data.data);
+          // console.log("Fetched ads:", data.data);
           setFrontPageAds(data.data);
         }
       } catch (error) {

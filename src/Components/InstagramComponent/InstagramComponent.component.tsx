@@ -24,8 +24,6 @@ interface InstagramComponentProps {
 }
 
 const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
-  console.log("Rendering ad:", ad);
-
   return (
     <div className="instagram-item">
       <InstagramEmbed url={ad.instagram_post_url} />

@@ -6,6 +6,7 @@ import HomePage from "./Pages/HomePage/HomePage";
 import AboutPage from "./Pages/AboutPage/AboutPage";
 import LocationsMapper from "./Components/LocationsMapper/LocationsMapper.component";
 import LocationDetails from "./Components/LocationDetails/LocationDetails";
+import Profile from "./Pages/ProfilePage/Profile";
 //import "./App.css";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             path="/places/:country/:state/:city"
             element={<LocationDetails />}
           />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>
