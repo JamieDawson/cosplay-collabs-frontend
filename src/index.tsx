@@ -1,12 +1,11 @@
+// index.tsx
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
-import "./index.css";
 import App from "./App";
 
-// Read Auth0 configuration from environment variables
-const domain = process.env.REACT_APP_AUTH0_DOMAIN as string;
-const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID as string;
+const domain = process.env.REACT_APP_AUTH0_DOMAIN!;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID!;
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -15,7 +14,8 @@ root.render(
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        // Send users to the /profile route after sign-up or login
+        redirect_uri: window.location.origin + "/profile",
       }}
     >
       <App />

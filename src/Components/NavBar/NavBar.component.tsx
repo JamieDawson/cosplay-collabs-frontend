@@ -13,7 +13,11 @@ const NavBar: React.FC = () => {
       <div className="logo">
         <Link to="/">Cosplay Collabs</Link>
       </div>
-      {user && <h4 style={{ margin: 0 }}>Hello {user.name}</h4>}
+      {user && (
+        <h4 style={{ margin: 0 }}>
+          Hello, {user.name} - AKA: {user.username}
+        </h4>
+      )}
       <ul className="nav-links">
         <SignUpButton />
         <LoginButton />
