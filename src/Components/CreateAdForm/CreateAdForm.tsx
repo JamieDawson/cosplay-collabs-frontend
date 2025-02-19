@@ -4,10 +4,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import "./CreateAdForm.css";
 
 const CreateAdForm: React.FC = () => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
 
   const [formData, setFormData] = useState({
-    user_id: "", // User ID creating the ad
+    user_id: user?.sub, // User ID creating the ad
     title: "",
     description: "",
     country: "",
@@ -108,14 +108,6 @@ const CreateAdForm: React.FC = () => {
         <h2>Please log in</h2>
       ) : (
         <form onSubmit={handleSubmit}>
-          {/* Removed id field as it is automatically generated */}
-          <input
-            name="user_id"
-            placeholder="User ID"
-            value={formData.user_id}
-            onChange={handleChange}
-            required
-          />
           <input
             name="title"
             placeholder="Title"
