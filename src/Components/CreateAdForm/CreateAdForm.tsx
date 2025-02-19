@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { locationData } from "../../Data/locations";
+import { useAuth0 } from "@auth0/auth0-react";
 import "./CreateAdForm.css";
 
 const CreateAdForm: React.FC = () => {
+  const { isAuthenticated } = useAuth0();
+
   const [formData, setFormData] = useState({
     user_id: "", // User ID creating the ad
     title: "",
@@ -100,78 +103,88 @@ const CreateAdForm: React.FC = () => {
       : [];
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Removed id field as it is automatically generated */}
-      <input
-        name="user_id"
-        placeholder="User ID"
-        value={formData.user_id}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="title"
-        placeholder="Title"
-        value={formData.title}
-        onChange={handleChange}
-        required
-      />
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={formData.description}
-        onChange={handleChange}
-      />
-      <select name="country" value={formData.country} onChange={handleChange}>
-        <option value="">Select Country</option>
-        {countryOptions.map((country) => (
-          <option key={country} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-      <select
-        name="state"
-        value={formData.state}
-        onChange={handleChange}
-        disabled={!formData.country}
-      >
-        <option value="">Select State</option>
-        {stateOptions.map((state) => (
-          <option key={state} value={state}>
-            {state}
-          </option>
-        ))}
-      </select>
-      <select
-        name="city"
-        value={formData.city}
-        onChange={handleChange}
-        disabled={!formData.state}
-      >
-        <option value="">Select City</option>
-        {cityOptions.map((city) => (
-          <option key={city} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
-      <input
-        name="instagramPostUrl"
-        placeholder="Instagram Post URL"
-        value={formData.instagramPostUrl}
-        onChange={handleChange}
-      />
-      {formData.keywords.map((keyword, index) => (
-        <input
-          key={index}
-          placeholder={`Keyword ${index + 1}`}
-          value={keyword}
-          onChange={(e) => handleKeywordChange(index, e.target.value)}
-        />
-      ))}
-      <button type="submit">Create Ad</button>
-    </form>
+    <>
+      {!isAuthenticated ? (
+        <h2>Please log in</h2>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          {/* Removed id field as it is automatically generated */}
+          <input
+            name="user_id"
+            placeholder="User ID"
+            value={formData.user_id}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="title"
+            placeholder="Title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+          <select
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+          >
+            <option value="">Select Country</option>
+            {countryOptions.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+          <select
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+            disabled={!formData.country}
+          >
+            <option value="">Select State</option>
+            {stateOptions.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+          <select
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            disabled={!formData.state}
+          >
+            <option value="">Select City</option>
+            {cityOptions.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
+          <input
+            name="instagramPostUrl"
+            placeholder="Instagram Post URL"
+            value={formData.instagramPostUrl}
+            onChange={handleChange}
+          />
+          {formData.keywords.map((keyword, index) => (
+            <input
+              key={index}
+              placeholder={`Keyword ${index + 1}`}
+              value={keyword}
+              onChange={(e) => handleKeywordChange(index, e.target.value)}
+            />
+          ))}
+          <button type="submit">Create Ad</button>
+        </form>
+      )}
+    </>
   );
 };
 
