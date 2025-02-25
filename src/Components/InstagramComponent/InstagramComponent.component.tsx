@@ -24,6 +24,31 @@ interface InstagramComponentProps {
   ad: Ad;
 }
 
+interface deleteAdProps {
+  id: number;
+}
+
+const deleteAd = ({ id }: deleteAdProps) => {
+  console.log("deleted add number: " + id);
+
+  const runDeleteAd = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/users/delete/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error deleting ad:", error);
+    }
+  };
+
+  runDeleteAd();
+};
+
 const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
   const { user } = useAuth0();
   console.log(user);
@@ -31,7 +56,11 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
   console.log(ad);
   return (
     <div className="instagram-item">
-      {user?.sub === ad.user_id ? <div>USER FOUND</div> : <></>}
+      {user?.sub === ad.user_id ? (
+        <button onClick={() => deleteAd({ id: ad.id })}>Delete</button>
+      ) : (
+        <></>
+      )}
 
       <InstagramEmbed url={ad.instagram_post_url} />
       <div className="instagram-item-title">{ad.title}</div>
