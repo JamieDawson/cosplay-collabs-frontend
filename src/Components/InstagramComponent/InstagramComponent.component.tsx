@@ -1,10 +1,6 @@
 import { InstagramEmbed } from "react-social-media-embed";
 import { useAuth0 } from "@auth0/auth0-react";
-
-interface Ad {
-  _id: string;
-  // Add other properties here
-}
+import { useNavigate } from "react-router-dom";
 
 interface InstagramComponentProps {
   key: string;
@@ -12,6 +8,7 @@ interface InstagramComponentProps {
 }
 
 interface Ad {
+  _id?: string;
   id: number;
   user_id: string;
   title: string;
@@ -51,13 +48,24 @@ const deleteAd = ({ id }: deleteAdProps) => {
 
 const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
   const { user } = useAuth0();
-  console.log(user);
+  const navigate = useNavigate();
 
-  console.log(ad);
+  const goToUpdateForm = (ad: Ad) => {
+    console.log("update form");
+    console.log(ad);
+    navigate("/UpdatePostForm", { state: { ad } });
+  };
+
+  // console.log(user);
+
+  // console.log(ad);
   return (
     <div className="instagram-item">
       {user?.sub === ad.user_id ? (
-        <button onClick={() => deleteAd({ id: ad.id })}>Delete</button>
+        <>
+          <button onClick={() => deleteAd({ id: ad.id })}>Delete</button>
+          <button onClick={() => goToUpdateForm(ad)}>Update</button>
+        </>
       ) : (
         <></>
       )}

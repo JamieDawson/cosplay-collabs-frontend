@@ -7,7 +7,8 @@ import AboutPage from "./Pages/AboutPage/AboutPage";
 import LocationsMapper from "./Components/LocationsMapper/LocationsMapper.component";
 import LocationDetails from "./Components/LocationDetails/LocationDetails";
 import Profile from "./Pages/ProfilePage/Profile";
-//import "./App.css";
+import ProfileCompletion from "./Components/ProfileComplete/ProfileComplete.component";
+import UpdatePostForm from "./Components/UpdatePostForm/UpdatePostForm.component";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
             element={<LocationDetails />}
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/UpdatePostForm" element={<UpdatePostForm />} />
+          <Route path="/complete-profile" element={<ProfileCompletion />} />
         </Routes>
       </div>
     </Router>

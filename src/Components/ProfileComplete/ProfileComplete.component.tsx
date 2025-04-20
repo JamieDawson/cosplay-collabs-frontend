@@ -16,7 +16,7 @@ const ProfileCompletion: React.FC = () => {
       const userData = {
         auth0_id: user?.sub,
         email: user?.email,
-        name: user?.name,
+        full_name: user?.name,
         username: username,
       };
 
