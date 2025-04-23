@@ -16,11 +16,13 @@ interface Ad {
 
 const TagsPage = () => {
   const location = useLocation();
-  const { keyword } = location.state || {};
+  let { keyword } = location.state || {};
   const [ads, setAds] = useState<Ad[]>([]);
 
   useEffect(() => {
     const gettingAds = async () => {
+      keyword = keyword.toLowerCase();
+      console.log("keyword now: ", keyword);
       try {
         const response = await fetch(
           `http://localhost:3000/api/ads/ads-by-tag/${keyword}`
