@@ -56,9 +56,11 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
     navigate("/UpdatePostForm", { state: { ad } });
   };
 
-  // console.log(user);
+  const goToTagPage = (keyword: string) => {
+    console.log(keyword);
+    navigate("/tags-page", { state: { keyword } });
+  };
 
-  // console.log(ad);
   return (
     <div className="instagram-item">
       {user?.sub === ad.user_id ? (
@@ -75,7 +77,9 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
       <div className="instagram-item-description">{ad.description}</div>
       <div className="instagram-item-tags">
         {ad.keywords.map((keyword, index) => (
-          <button key={index}>{keyword}</button>
+          <button onClick={() => goToTagPage(keyword)} key={index}>
+            {keyword}
+          </button>
         ))}
       </div>
     </div>

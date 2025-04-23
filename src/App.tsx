@@ -9,6 +9,7 @@ import LocationDetails from "./Components/LocationDetails/LocationDetails";
 import Profile from "./Pages/ProfilePage/Profile";
 import ProfileCompletion from "./Components/ProfileComplete/ProfileComplete.component";
 import UpdatePostForm from "./Components/UpdatePostForm/UpdatePostForm.component";
+import TagsPage from "./Pages/TagsPage/TagsPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/UpdatePostForm" element={<UpdatePostForm />} />
           <Route path="/complete-profile" element={<ProfileCompletion />} />
+          <Route path="/tags-page" element={<TagsPage />} />
         </Routes>
       </div>
     </Router>
