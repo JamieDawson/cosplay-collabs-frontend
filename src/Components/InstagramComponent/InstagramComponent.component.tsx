@@ -76,14 +76,27 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
       <div className="instagram-item-title">{ad.title}</div>
       <div className="instagram-item-description">{ad.description}</div>
       <div className="instagram-item-tags">
-        {ad.keywords.map((keyword, index) => (
-          <button onClick={() => goToTagPage(keyword)} key={index}>
-            {keyword}
-          </button>
-        ))}
+        {ad.keywords.map((keyword, index) =>
+          keyword.length > 0 ? (
+            <button onClick={() => goToTagPage(keyword)} key={index}>
+              {keyword}
+            </button>
+          ) : (
+            ""
+          )
+        )}
       </div>
     </div>
   );
 };
 
 export default InstagramComponent;
+
+/*
+        {ad.keywords.map((keyword, index) => (
+          <button onClick={() => goToTagPage(keyword)} key={index}>
+            {keyword}
+          </button>
+        ))}
+
+*/

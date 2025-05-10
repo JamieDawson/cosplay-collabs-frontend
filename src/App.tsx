@@ -10,6 +10,7 @@ import Profile from "./Pages/ProfilePage/Profile";
 import ProfileCompletion from "./Components/ProfileComplete/ProfileComplete.component";
 import UpdatePostForm from "./Components/UpdatePostForm/UpdatePostForm.component";
 import TagsPage from "./Pages/TagsPage/TagsPage";
+import StateDetails from "./Components/StateDetails/StateDetails.component";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             path="/places/:country/:state/:city"
             element={<LocationDetails />}
           />
+          <Route path="/places/:country/:state" element={<StateDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/UpdatePostForm" element={<UpdatePostForm />} />
           <Route path="/complete-profile" element={<ProfileCompletion />} />

@@ -12,7 +12,9 @@ const LocationsMapper: React.FC = () => {
               <h2>{country}</h2>
               {Object.entries(countryData.states).map(([state, cities]) => (
                 <div key={state} style={{ marginLeft: "20px" }}>
-                  <h3>{state}</h3>
+                  <Link to={`/places/${country}/${state}`}>
+                    <h3>{state}</h3>
+                  </Link>
                   <ul>
                     {cities.map((city) => (
                       <li key={city}>
