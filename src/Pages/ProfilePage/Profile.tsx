@@ -84,12 +84,34 @@ function Profile() {
   }, []);
 
   const showFinalWarning = () => {
-    console.log("dleete");
-
     if (finalWarningPopup === true) {
       setFinalWarningPopup(false);
     } else {
       setFinalWarningPopup(true);
+    }
+  };
+
+  const deleteCurrentUserProfile = async () => {
+    console.log("deleteCurrentUserProfile");
+    console.log(user?.sub);
+
+    try {
+      // Change URL to your backend's full address
+      const response = await fetch(
+        "http://localhost:3000/api/users/delete-account/" +
+          encodeURIComponent(user?.sub!),
+        { method: "DELETE" }
+      );
+
+      console.log(response);
+
+      if (response.ok) {
+        alert("Account deleted successfully");
+      } else {
+        alert("Failed to delete account.");
+      }
+    } catch (error) {
+      console.error("Error creating ad:", error);
     }
   };
 
@@ -118,7 +140,11 @@ function Profile() {
               your profile and all of your ads. This decision can not be
               reversed.
             </p>
-            <button className="bothButtons" style={{ backgroundColor: "red" }}>
+            <button
+              className="bothButtons"
+              style={{ backgroundColor: "red" }}
+              onClick={() => deleteCurrentUserProfile()}
+            >
               Yes! Delete my profile
             </button>
             <button className="bothButtons" onClick={showFinalWarning}>
