@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
 import axios from "axios";
 
+import "../ProfilePage/Profile.css";
+
 interface CustomUserData {
   id: number;
   auth0_id: string;
@@ -37,6 +39,7 @@ function Profile() {
     null
   );
   const [loading, setLoading] = useState(true);
+  const [finalWarningPopup, setFinalWarningPopup] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -80,6 +83,16 @@ function Profile() {
     getAdsForProfile();
   }, []);
 
+  const showFinalWarning = () => {
+    console.log("dleete");
+
+    if (finalWarningPopup === true) {
+      setFinalWarningPopup(false);
+    } else {
+      setFinalWarningPopup(true);
+    }
+  };
+
   return !isAuthenticated ? (
     <div>Please log in.</div>
   ) : loading ? (
@@ -93,8 +106,35 @@ function Profile() {
       {ads.map((ad) => (
         <InstagramComponent key={ad.id.toString()} ad={ad} />
       ))}
+      <button onClick={() => showFinalWarning()}>Delete your profile</button>
+      {finalWarningPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <button className="xbutton" onClick={showFinalWarning}>
+              X
+            </button>
+            <p>
+              Are you sure you want to delete your profile? This will remove
+              your profile and all of your ads. This decision can not be
+              reversed.
+            </p>
+            <button className="bothButtons" style={{ backgroundColor: "red" }}>
+              Yes! Delete my profile
+            </button>
+            <button className="bothButtons" onClick={showFinalWarning}>
+              No! I want to keep this!
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Profile;
+
+/*
+TODO: Update teh popup so it appear in the middle of the page.
+I want a final warning so users don't delete their accounts without thinking.
+I'm going to chagne it to be a popup where you have to type out the word "delete" similiar to GitHub
+*/

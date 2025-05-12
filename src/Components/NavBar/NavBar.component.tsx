@@ -8,6 +8,7 @@ import "./NavBar.css";
 
 const NavBar: React.FC = () => {
   const { user } = useAuth0();
+  console.log(user);
   return (
     <nav className="navbar">
       <div className="logo">
