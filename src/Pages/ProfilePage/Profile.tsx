@@ -32,6 +32,8 @@ interface Ad {
 }
 
 function Profile() {
+  const { logout } = useAuth0();
+
   const [ads, setProfileAds] = useState<Ad[]>([]);
   const { isAuthenticated, user } = useAuth0();
   const navigate = useNavigate();
@@ -40,6 +42,7 @@ function Profile() {
   );
   const [loading, setLoading] = useState(true);
   const [finalWarningPopup, setFinalWarningPopup] = useState(false);
+  const [popUpAfterDeleting, setPopUpAfterDeleting] = useState(false); // Will be set to true
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -107,12 +110,17 @@ function Profile() {
 
       if (response.ok) {
         alert("Account deleted successfully");
+        setPopUpAfterDeleting(true);
       } else {
         alert("Failed to delete account.");
       }
     } catch (error) {
       console.error("Error creating ad:", error);
     }
+  };
+
+  const sendToHomePageAfterDeletingUser = () => {
+    logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
   return !isAuthenticated ? (
@@ -149,6 +157,17 @@ function Profile() {
             </button>
             <button className="bothButtons" onClick={showFinalWarning}>
               No! I want to keep this!
+            </button>
+          </div>
+        </div>
+      )}
+
+      {popUpAfterDeleting && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <p>Your account is now deleted!</p>
+            <button onClick={() => sendToHomePageAfterDeletingUser()}>
+              Close
             </button>
           </div>
         </div>
