@@ -68,11 +68,14 @@ function Profile() {
 
   useEffect(() => {
     const getAdsForProfile = async () => {
+      console.log("user?.sub is ", user?.sub);
       try {
         const response = await fetch(
           "http://localhost:3000/api/ads/user/" + user?.sub
         );
         const data = await response.json();
+
+        console.log("data is ", data);
 
         if (data.success) {
           // console.log("Fetched ads:", data.data);
@@ -84,7 +87,7 @@ function Profile() {
     };
 
     getAdsForProfile();
-  }, []);
+  }, [user]);
 
   const showFinalWarning = () => {
     if (finalWarningPopup === true) {
