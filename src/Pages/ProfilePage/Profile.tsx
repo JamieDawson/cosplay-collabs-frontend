@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
 import axios from "axios";
+import { useUser } from "../../UserContext";
 
 import "../ProfilePage/Profile.css";
 
@@ -33,6 +34,7 @@ interface Ad {
 
 function Profile() {
   const { logout } = useAuth0();
+  const { setUsername } = useUser(); // add this at the top
 
   const [ads, setProfileAds] = useState<Ad[]>([]);
   const { isAuthenticated, user } = useAuth0();
@@ -44,6 +46,7 @@ function Profile() {
   const [finalWarningPopup, setFinalWarningPopup] = useState(false);
   const [popUpAfterDeleting, setPopUpAfterDeleting] = useState(false); // Will be set to true
 
+  //useEffect checks if user exist, if not, finalize it with the complete-profile function
   useEffect(() => {
     if (isAuthenticated && user) {
       const fetchUserData = async () => {
@@ -51,10 +54,14 @@ function Profile() {
           const response = await axios.get(
             `http://localhost:3000/api/users/${encodeURIComponent(user.sub!)}`
           );
-          setCustomUserData(response.data.user);
+          const userData = response.data.user;
+          setCustomUserData(userData);
+
+          if (userData?.username) {
+            setUsername(userData.username); // set your custom username
+          }
         } catch (error: any) {
           console.error("Error fetching custom user data:", error);
-          // If the user is not found in your DB, redirect to the profile completion page
           if (error.response && error.response.status === 404) {
             navigate("/complete-profile");
           }
@@ -64,11 +71,10 @@ function Profile() {
       };
       fetchUserData();
     }
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, user, navigate, setUsername]);
 
   useEffect(() => {
     const getAdsForProfile = async () => {
-      console.log("user?.sub is ", user?.sub);
       try {
         const response = await fetch(
           "http://localhost:3000/api/ads/user/" + user?.sub
@@ -78,7 +84,6 @@ function Profile() {
         console.log("data is ", data);
 
         if (data.success) {
-          // console.log("Fetched ads:", data.data);
           setProfileAds(data.data);
         }
       } catch (error) {
@@ -180,9 +185,3 @@ function Profile() {
 }
 
 export default Profile;
-
-/*
-TODO: Update teh popup so it appear in the middle of the page.
-I want a final warning so users don't delete their accounts without thinking.
-I'm going to chagne it to be a popup where you have to type out the word "delete" similiar to GitHub
-*/
