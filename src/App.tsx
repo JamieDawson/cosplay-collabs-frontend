@@ -11,6 +11,7 @@ import ProfileCompletion from "./Components/ProfileComplete/ProfileComplete.comp
 import UpdatePostForm from "./Components/UpdatePostForm/UpdatePostForm.component";
 import TagsPage from "./Pages/TagsPage/TagsPage";
 import StateDetails from "./Components/StateDetails/StateDetails.component";
+import PostLoginRedirect from "./PostLoginRedirect";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/UpdatePostForm" element={<UpdatePostForm />} />
           <Route path="/complete-profile" element={<ProfileCompletion />} />
           <Route path="/tags-page" element={<TagsPage />} />
+          <Route path="/post-login" element={<PostLoginRedirect />} />
         </Routes>
       </div>
     </Router>

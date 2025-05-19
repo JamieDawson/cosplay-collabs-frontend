@@ -1,4 +1,3 @@
-// index.tsx
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
@@ -15,7 +14,7 @@ root.render(
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: window.location.origin + "/profile", // you can later change this to `/${username}/profile` dynamically
+        redirect_uri: window.location.origin + "/post-login",
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}
