@@ -1,36 +1,45 @@
-// ProfileComplete.component.tsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../UserContext"; // ✅ Make sure path is correct
 
 const ProfileCompletion: React.FC = () => {
   const { user } = useAuth0();
-  const [username, setUsername] = useState("");
+  const [username, setUsernameInput] = useState("");
   const navigate = useNavigate();
+  const { setUsername } = useUser(); // ✅ Get context setter
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting profile completion for:", user);
+    if (!username.trim() || !user) return;
+
+    const trimmedUsername = username.trim();
+
     try {
       const userData = {
-        auth0_id: user?.sub,
-        email: user?.email,
-        full_name: user?.name,
-        username: username,
+        auth0_id: user.sub,
+        email: user.email,
+        full_name: user.name,
+        username: trimmedUsername,
       };
 
       const response = await axios.post(
         "http://localhost:3000/api/users/complete-profile",
         userData
       );
+
       console.log("Profile updated successfully:", response.data);
-      // Redirect after successful update
-      navigate("/profile", { replace: true });
-      // If navigate doesn't work, you can try:
-      // window.location.href = "/profile";
+
+      // ✅ Update context and localStorage
+      setUsername(trimmedUsername);
+      localStorage.setItem("username", trimmedUsername);
+
+      // ✅ Navigate to /profile/:username
+      navigate(`/profile/${trimmedUsername}`);
     } catch (error) {
       console.error("Error updating profile:", error);
+      alert("Failed to complete profile. Please try again.");
     }
   };
 
@@ -43,7 +52,7 @@ const ProfileCompletion: React.FC = () => {
           type="text"
           id="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsernameInput(e.target.value)}
           required
         />
         <button type="submit">Save Profile</button>
