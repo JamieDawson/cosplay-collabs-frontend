@@ -1,7 +1,7 @@
 // Profile.tsx
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
 import axios from "axios";
 import { useUser } from "../../UserContext";
@@ -35,6 +35,7 @@ interface Ad {
 function Profile() {
   const { logout } = useAuth0();
   const { setUsername } = useUser(); // add this at the top
+  const { username } = useParams<{ username: string }>();
 
   const [ads, setProfileAds] = useState<Ad[]>([]);
   const { isAuthenticated, user } = useAuth0();
@@ -52,7 +53,9 @@ function Profile() {
       const fetchUserData = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3000/api/users/${encodeURIComponent(user.sub!)}`
+            `http://localhost:3000/api/users/username/${encodeURIComponent(
+              username!
+            )}`
           );
           const userData = response.data.user;
           setCustomUserData(userData);

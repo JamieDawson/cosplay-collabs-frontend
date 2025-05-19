@@ -43,7 +43,7 @@ const NavBar: React.FC = () => {
           </Link>
         </li>
         <li>
-          <Link to="/profile" className="nav-link">
+          <Link to={`/profile/${username}`} className="nav-link">
             Profile
           </Link>
         </li>
