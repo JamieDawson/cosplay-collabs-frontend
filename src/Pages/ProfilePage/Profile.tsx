@@ -49,23 +49,26 @@ function Profile() {
 
   //useEffect checks if user exist, if not, finalize it with the complete-profile function
   useEffect(() => {
-    if (isAuthenticated && user) {
+    if (isAuthenticated && user && username) {
       const fetchUserData = async () => {
         try {
           const response = await axios.get(
             `http://localhost:3000/api/users/username/${encodeURIComponent(
-              username!
+              username
             )}`
           );
           const userData = response.data.user;
           setCustomUserData(userData);
-
-          if (userData?.username) {
-            setUsername(userData.username); // set your custom username
+          if (userData?.username && user?.nickname === username) {
+            setUsername(userData.username);
           }
         } catch (error: any) {
           console.error("Error fetching custom user data:", error);
-          if (error.response && error.response.status === 404) {
+          if (
+            error.response &&
+            error.response.status === 404 &&
+            user?.nickname === username // only redirect if viewing your own profile
+          ) {
             navigate("/complete-profile");
           }
         } finally {
@@ -74,7 +77,7 @@ function Profile() {
       };
       fetchUserData();
     }
-  }, [isAuthenticated, user, navigate, setUsername]);
+  }, [isAuthenticated, user, username]); // ✅ add `username` here!
 
   useEffect(() => {
     const getAdsForProfile = async () => {
