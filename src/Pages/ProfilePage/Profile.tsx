@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
 import axios from "axios";
 import { useUser } from "../../UserContext";
-
 import "../ProfilePage/Profile.css";
 
+// Define the interface for custom user data from your PostgreSQL DB
 interface CustomUserData {
   id: number;
   auth0_id: string;
@@ -18,6 +18,7 @@ interface CustomUserData {
   updated_at: string;
 }
 
+// Define interface for Ads
 interface Ad {
   _id: string;
   id: number;
@@ -33,62 +34,69 @@ interface Ad {
 }
 
 function Profile() {
-  const { logout } = useAuth0();
-  const { setUsername } = useUser(); // add this at the top
-  const { username } = useParams<{ username: string }>();
+  const { logout, isAuthenticated, user } = useAuth0(); // Auth0 context
+  const { setUsername } = useUser(); // Our global context for username
+  const { username } = useParams<{ username: string }>(); // Username from URL params
+  const navigate = useNavigate();
 
   const [ads, setProfileAds] = useState<Ad[]>([]);
-  const { isAuthenticated, user } = useAuth0();
-  const navigate = useNavigate();
   const [customUserData, setCustomUserData] = useState<CustomUserData | null>(
     null
   );
   const [loading, setLoading] = useState(true);
   const [finalWarningPopup, setFinalWarningPopup] = useState(false);
-  const [popUpAfterDeleting, setPopUpAfterDeleting] = useState(false); // Will be set to true
+  const [popUpAfterDeleting, setPopUpAfterDeleting] = useState(false);
 
-  //useEffect checks if user exist, if not, finalize it with the complete-profile function
+  /**
+   * Fetch user data based on the username in URL
+   * We'll query PostgreSQL by username, which should be indexed for performance.
+   * - If user is viewing their own profile, we'll also update the context username.
+   */
   useEffect(() => {
-    if (isAuthenticated && user && username) {
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/api/users/username/${encodeURIComponent(
-              username
-            )}`
-          );
-          const userData = response.data.user;
-          setCustomUserData(userData);
-          if (userData?.username && user?.nickname === username) {
-            setUsername(userData.username);
-          }
-        } catch (error: any) {
-          console.error("Error fetching custom user data:", error);
-          if (
-            error.response &&
-            error.response.status === 404 &&
-            user?.nickname === username // only redirect if viewing your own profile
-          ) {
-            navigate("/complete-profile");
-          }
-        } finally {
-          setLoading(false);
+    if (!isAuthenticated || !user || !username) return;
+
+    const fetchUserData = async () => {
+      try {
+        // Call backend API to get user data by username (PostgreSQL should use index on username)
+        const response = await axios.get(
+          `http://localhost:3000/api/users/username/${encodeURIComponent(
+            username
+          )}`
+        );
+        const userData: CustomUserData = response.data.user;
+        setCustomUserData(userData);
+
+        // If the profile viewed belongs to the logged-in user (matching auth0_id), set context username
+        if (userData?.auth0_id === user.sub) {
+          setUsername(userData.username || ""); // Optional: fallback if username is null
         }
-      };
-      fetchUserData();
-    }
-  }, [isAuthenticated, user, username]); // ✅ add `username` here!
+      } catch (error: any) {
+        console.error("Error fetching custom user data:", error);
 
+        // If username not found (404) and it's the logged-in user's profile, redirect to complete-profile
+        if (error.response?.status === 404 && user?.nickname === username) {
+          navigate("/complete-profile");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [isAuthenticated, user, username, navigate, setUsername]);
+
+  /**
+   * Fetch ads created by this user.
+   * - If viewing own profile, use user.sub (auth0_id).
+   * - If viewing someone else's profile, use customUserData.auth0_id.
+   */
   useEffect(() => {
-    const getAdsForProfile = async () => {
+    const getAdsForProfile = async (auth0Id: string) => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/ads/user/" + user?.sub
+          `http://localhost:3000/api/ads/user/${encodeURIComponent(auth0Id)}`
         );
         const data = await response.json();
-
-        console.log("data is ", data);
-
         if (data.success) {
           setProfileAds(data.data);
         }
@@ -97,60 +105,79 @@ function Profile() {
       }
     };
 
-    getAdsForProfile();
-  }, [user]);
-
-  const showFinalWarning = () => {
-    if (finalWarningPopup === true) {
-      setFinalWarningPopup(false);
-    } else {
-      setFinalWarningPopup(true);
+    // Only fetch ads if we have customUserData (loaded) or own profile (user.sub)
+    if (customUserData?.auth0_id) {
+      getAdsForProfile(customUserData.auth0_id);
+    } else if (user?.sub && user?.nickname === username) {
+      getAdsForProfile(user.sub);
     }
+  }, [customUserData?.auth0_id, user?.sub, username]);
+
+  /**
+   * Show the warning popup for account deletion
+   */
+  const showFinalWarning = () => {
+    setFinalWarningPopup((prev) => !prev);
   };
 
+  /**
+   * Delete the user's account from PostgreSQL using auth0_id
+   */
   const deleteCurrentUserProfile = async () => {
-    console.log("deleteCurrentUserProfile");
-    console.log(user?.sub);
+    if (!user?.sub) return;
 
     try {
-      // Change URL to your backend's full address
       const response = await fetch(
-        "http://localhost:3000/api/users/delete-account/" +
-          encodeURIComponent(user?.sub!),
-        { method: "DELETE" }
+        `http://localhost:3000/api/users/delete-account/${encodeURIComponent(
+          user.sub
+        )}`,
+        {
+          method: "DELETE",
+        }
       );
-
-      console.log(response);
-
       if (response.ok) {
-        alert("Account deleted successfully");
         setPopUpAfterDeleting(true);
       } else {
         alert("Failed to delete account.");
       }
     } catch (error) {
-      console.error("Error creating ad:", error);
+      console.error("Error deleting account:", error);
     }
   };
 
+  /**
+   * After deletion, log out and navigate home
+   */
   const sendToHomePageAfterDeletingUser = () => {
     logout({ logoutParams: { returnTo: window.location.origin } });
   };
 
-  return !isAuthenticated ? (
-    <div>Please log in.</div>
-  ) : loading ? (
-    <div>Loading profile...</div>
-  ) : (
+  // Handle loading state
+  if (!isAuthenticated) return <div>Please log in.</div>;
+  if (loading) return <div>Loading profile...</div>;
+
+  return (
     <div>
-      <h2>Welcome, {user?.name || "unknown"}</h2>
+      <h2>Welcome, {customUserData?.full_name || user?.name || "unknown"}</h2>
       <p>Custom Username: {customUserData?.username || "Not set"}</p>
-      <p>Your unique ID is: {user?.sub || "unknown"}</p>
-      <p>Your email is: {user?.email || "unknown"}</p>
+      <p>
+        Your unique ID is: {customUserData?.auth0_id || user?.sub || "unknown"}
+      </p>
+      <p>Your email is: {customUserData?.email || user?.email || "unknown"}</p>
+
+      {/* Render user's ads */}
       {ads.map((ad) => (
-        <InstagramComponent key={ad.id.toString()} ad={ad} />
+        <InstagramComponent key={ad._id} ad={ad} />
       ))}
-      <button onClick={() => showFinalWarning()}>Delete your profile</button>
+
+      {/* Delete profile button and warning */}
+
+      {customUserData?.auth0_id === user?.sub ? (
+        <button onClick={showFinalWarning}>Delete your profile</button>
+      ) : (
+        ""
+      )}
+
       {finalWarningPopup && (
         <div className="popup-overlay">
           <div className="popup">
@@ -158,31 +185,29 @@ function Profile() {
               X
             </button>
             <p>
-              Are you sure you want to delete your profile? This will remove
-              your profile and all of your ads. This decision can not be
+              Are you sure you want to delete your profile? This cannot be
               reversed.
             </p>
             <button
               className="bothButtons"
               style={{ backgroundColor: "red" }}
-              onClick={() => deleteCurrentUserProfile()}
+              onClick={deleteCurrentUserProfile}
             >
-              Yes! Delete my profile
+              Yes, delete it
             </button>
             <button className="bothButtons" onClick={showFinalWarning}>
-              No! I want to keep this!
+              No, keep it
             </button>
           </div>
         </div>
       )}
 
+      {/* Post-deletion popup */}
       {popUpAfterDeleting && (
         <div className="popup-overlay">
           <div className="popup">
-            <p>Your account is now deleted!</p>
-            <button onClick={() => sendToHomePageAfterDeletingUser()}>
-              Close
-            </button>
+            <p>Your account has been deleted.</p>
+            <button onClick={sendToHomePageAfterDeletingUser}>Close</button>
           </div>
         </div>
       )}
