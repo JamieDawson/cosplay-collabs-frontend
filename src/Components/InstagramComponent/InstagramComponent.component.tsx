@@ -1,11 +1,8 @@
 import { InstagramEmbed } from "react-social-media-embed";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-
-interface InstagramComponentProps {
-  key: string;
-  ad: Ad;
-}
+import { useState } from "react";
+import "./InstagramComponent.css";
 
 interface Ad {
   _id?: string;
@@ -21,14 +18,21 @@ interface InstagramComponentProps {
   ad: Ad;
 }
 
-interface deleteAdProps {
-  id: number;
-}
+const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
+  const { user } = useAuth0();
+  const navigate = useNavigate();
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [confirmDeletedPopup, setConfirmDeletedPopup] = useState(false);
 
-const deleteAd = ({ id }: deleteAdProps) => {
-  console.log("deleted add number: " + id);
+  const goToUpdateForm = (ad: Ad) => {
+    navigate("/UpdatePostForm", { state: { ad } });
+  };
 
-  const runDeleteAd = async () => {
+  const goToTagPage = (keyword: string) => {
+    navigate("/tags-page", { state: { keyword } });
+  };
+
+  const handleDeleteAd = async (id: number) => {
     try {
       const response = await fetch(
         `http://localhost:3000/api/users/delete/${id}`,
@@ -38,65 +42,59 @@ const deleteAd = ({ id }: deleteAdProps) => {
       );
       const data = await response.json();
       console.log(data);
+      setShowDeletePopup(false);
+      setConfirmDeletedPopup(true);
+      // Optionally navigate or refresh
     } catch (error) {
       console.error("Error deleting ad:", error);
     }
   };
 
-  runDeleteAd();
-};
-
-const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
-  const { user } = useAuth0();
-  const navigate = useNavigate();
-
-  const goToUpdateForm = (ad: Ad) => {
-    console.log("update form");
-    console.log(ad);
-    navigate("/UpdatePostForm", { state: { ad } });
-  };
-
-  const goToTagPage = (keyword: string) => {
-    console.log(keyword);
-    navigate("/tags-page", { state: { keyword } });
+  const handleConfirmDeletedPopup = (trueBool: boolean) => {
+    console.log("handleConfirmDeletedPopup ", trueBool);
+    setConfirmDeletedPopup(false);
   };
 
   return (
-    <div className="instagram-item">
-      {user?.sub === ad.user_id ? (
-        <>
-          <button onClick={() => deleteAd({ id: ad.id })}>Delete</button>
-          <button onClick={() => goToUpdateForm(ad)}>Update</button>
-        </>
-      ) : (
-        <></>
-      )}
-
-      <InstagramEmbed url={ad.instagram_post_url} />
-      <div className="instagram-item-title">{ad.title}</div>
-      <div className="instagram-item-description">{ad.description}</div>
-      <div className="instagram-item-tags">
-        {ad.keywords.map((keyword, index) =>
-          keyword.length > 0 ? (
-            <button onClick={() => goToTagPage(keyword)} key={index}>
-              {keyword}
-            </button>
-          ) : (
-            ""
-          )
+    <>
+      <div className="instagram-item">
+        {user?.sub === ad.user_id && (
+          <>
+            <button onClick={() => setShowDeletePopup(true)}>Delete</button>
+            <button onClick={() => goToUpdateForm(ad)}>Update</button>
+          </>
         )}
+
+        <InstagramEmbed url={ad.instagram_post_url} />
+        <div className="instagram-item-title">{ad.title}</div>
+        <div className="instagram-item-description">{ad.description}</div>
+        <div className="instagram-item-tags">
+          {ad.keywords.map((keyword, index) =>
+            keyword.length > 0 ? (
+              <button onClick={() => goToTagPage(keyword)} key={index}>
+                {keyword}
+              </button>
+            ) : null
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* Popup rendered outside the container */}
+      {showDeletePopup && (
+        <div className="delete-popup">
+          <p>Are you sure you want to delete this ad?</p>
+          <button onClick={() => handleDeleteAd(ad.id)}>Yes, Delete</button>
+          <button onClick={() => setShowDeletePopup(false)}>Cancel</button>
+        </div>
+      )}
+      {confirmDeletedPopup && (
+        <div className="delete-popup">
+          <p>Your ad has been deleted!</p>
+          <button onClick={() => handleConfirmDeletedPopup(true)}>Close</button>
+        </div>
+      )}
+    </>
   );
 };
 
 export default InstagramComponent;
-
-/*
-        {ad.keywords.map((keyword, index) => (
-          <button onClick={() => goToTagPage(keyword)} key={index}>
-            {keyword}
-          </button>
-        ))}
-
-*/

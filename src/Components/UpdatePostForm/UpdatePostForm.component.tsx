@@ -20,6 +20,7 @@ const UpdatePostForm = () => {
   const location = useLocation();
   const { ad } = location.state as { ad: Ad };
   const countryOptions = Object.keys(locationData.countries);
+  const [updateButtonClicked, setUpdateButtonClicked] = useState(false);
 
   const [formData, setFormData] = useState({
     id: ad.id,
@@ -50,7 +51,7 @@ const UpdatePostForm = () => {
   };
 
   useEffect(() => {
-    console.log(formData);
+    console.log("Formdata is: ", formData);
   }, [formData]);
 
   const handleKeywordChange = (index: number, value: string) => {
@@ -115,6 +116,15 @@ const UpdatePostForm = () => {
     }
   };
 
+  const showPopupForUpdatedAd = () => {
+    console.log("showPopupForUpdateAd");
+    if (updateButtonClicked === true) {
+      setUpdateButtonClicked(false);
+    } else {
+      setUpdateButtonClicked(true);
+    }
+  };
+
   return (
     <>
       {!isAuthenticated ? (
@@ -123,17 +133,6 @@ const UpdatePostForm = () => {
         <>
           <div>
             <h2>Update Post</h2>
-            <div>userID: {formData.user_id}</div>
-            <div>Title: {formData.title}</div>
-            <div>Description: {formData.description}</div>
-            <div>Country: {formData.country}</div>
-            <div>state: {formData.state}</div>
-            <div>city: {formData.city}</div>
-            <div>instagramPostUrl: {formData.instagramPostUrl}</div>
-            <div>{formData.keywords[0]}</div>
-            <div>{formData.keywords[1]}</div>
-            <div>{formData.keywords[2]}</div>
-            <div>{formData.keywords[3]}</div>
           </div>
           <form onSubmit={updateAd}>
             <input
@@ -202,9 +201,29 @@ const UpdatePostForm = () => {
                 onChange={(e) => handleKeywordChange(index, e.target.value)}
               />
             ))}
-            <button type="submit">Update Ad</button>
+            <button type="submit" onClick={() => showPopupForUpdatedAd()}>
+              Update Ad
+            </button>
           </form>
         </>
+      )}
+      {updateButtonClicked ? (
+        <div className="popup-overlay">
+          <div className="popup">
+            <button className="xbutton" onClick={() => showPopupForUpdatedAd()}>
+              X
+            </button>
+            <p>Your ad as been updated!</p>
+            <button
+              className="bothButtons"
+              onClick={() => showPopupForUpdatedAd()}
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      ) : (
+        ""
       )}
     </>
   );
