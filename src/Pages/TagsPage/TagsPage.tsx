@@ -50,7 +50,13 @@ const TagsPage = () => {
 
       <div className="ads-list">
         {ads.length > 0 ? (
-          ads.map((ad) => <InstagramComponent key={ad.id.toString()} ad={ad} />)
+          ads.map((ad) => (
+            <InstagramComponent
+              key={ad.id.toString()}
+              ad={ad}
+              onDelete={() => {}}
+            />
+          ))
         ) : (
           <p>No ads found for this tag.</p>
         )}

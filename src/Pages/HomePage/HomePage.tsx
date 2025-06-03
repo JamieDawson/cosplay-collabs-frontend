@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
-
 import "./HomePage.css";
 
 interface Ad {
@@ -27,23 +26,29 @@ const HomePage: React.FC = () => {
           "http://localhost:3000/api/ads/most-recent"
         );
         const data = await response.json();
-
         if (data.success) {
-          // console.log("Fetched ads:", data.data);
           setFrontPageAds(data.data);
         }
       } catch (error) {
         console.error("Error fetching ads:", error);
       }
     };
-
     getAdsForFrontPage();
   }, []);
+
+  // Function to remove an ad from the state after deletion
+  const removeAdFromFrontPage = (deletedId: number) => {
+    setFrontPageAds((prevAds) => prevAds.filter((ad) => ad.id !== deletedId));
+  };
 
   return (
     <div className="instagram-grid">
       {frontPageAds.map((ad) => (
-        <InstagramComponent key={ad.id.toString()} ad={ad} />
+        <InstagramComponent
+          key={ad.id.toString()}
+          ad={ad}
+          onDelete={removeAdFromFrontPage} //
+        />
       ))}
     </div>
   );

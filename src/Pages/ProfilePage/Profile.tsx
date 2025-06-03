@@ -167,7 +167,7 @@ function Profile() {
 
       {/* Render user's ads */}
       {ads.map((ad) => (
-        <InstagramComponent key={ad._id} ad={ad} />
+        <InstagramComponent key={ad._id} ad={ad} onDelete={() => {}} />
       ))}
 
       {/* Delete profile button and warning */}

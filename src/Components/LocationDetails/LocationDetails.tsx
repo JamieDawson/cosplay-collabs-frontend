@@ -59,7 +59,13 @@ const LocationDetails: React.FC = () => {
       {ads.length === 0 ? (
         <p>No ads found for {city}.</p>
       ) : (
-        ads.map((ad) => <InstagramComponent key={ad.id.toString()} ad={ad} />)
+        ads.map((ad) => (
+          <InstagramComponent
+            key={ad.id.toString()}
+            ad={ad}
+            onDelete={() => {}}
+          />
+        ))
       )}
     </div>
   );

@@ -5,6 +5,9 @@ import "./CreateAdForm.css";
 
 const CreateAdForm: React.FC = () => {
   const { isAuthenticated, user } = useAuth0();
+  const [adCreatedPopup, setAdCreatedPopUp] = useState(false);
+  const maxLengthDescription = 200;
+  const maxLengthTitle = 65;
 
   const [formData, setFormData] = useState({
     user_id: user?.sub, // User ID creating the ad
@@ -53,7 +56,8 @@ const CreateAdForm: React.FC = () => {
       });
 
       if (response.ok) {
-        alert("Ad created successfully!");
+        setAdCreatedPopUp(true);
+        //alert("Ad created successfully!");
       } else {
         alert("Failed to create ad.");
       }
@@ -102,29 +106,49 @@ const CreateAdForm: React.FC = () => {
         )[formData.country].states[formData.state]
       : [];
 
+  const closeAdCreatedPopup = () => {
+    setAdCreatedPopUp(false);
+  };
+
   return (
     <>
+      {adCreatedPopup && (
+        <div className="delete-popup">
+          <p>Ad created!</p>
+          <button onClick={() => closeAdCreatedPopup()}>OK!</button>
+        </div>
+      )}
       {!isAuthenticated ? (
         <h2>Please log in</h2>
       ) : (
         <form onSubmit={handleSubmit}>
           <input
+            maxLength={maxLengthTitle}
             name="title"
             placeholder="Title"
             value={formData.title}
             onChange={handleChange}
             required
           />
+          <p>
+            {formData.title.length}/{maxLengthTitle}
+          </p>
           <textarea
+            maxLength={maxLengthDescription}
             name="description"
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
+            required
           />
+          <p>
+            {formData.description.length} / {maxLengthDescription}
+          </p>
           <select
             name="country"
             value={formData.country}
             onChange={handleChange}
+            required
           >
             <option value="">Select Country</option>
             {countryOptions.map((country) => (
@@ -138,6 +162,7 @@ const CreateAdForm: React.FC = () => {
             value={formData.state}
             onChange={handleChange}
             disabled={!formData.country}
+            required
           >
             <option value="">Select State</option>
             {stateOptions.map((state) => (
@@ -151,6 +176,7 @@ const CreateAdForm: React.FC = () => {
             value={formData.city}
             onChange={handleChange}
             disabled={!formData.state}
+            required
           >
             <option value="">Select City</option>
             {cityOptions.map((city) => (
@@ -164,6 +190,7 @@ const CreateAdForm: React.FC = () => {
             placeholder="Instagram Post URL"
             value={formData.instagramPostUrl}
             onChange={handleChange}
+            required
           />
           {formData.keywords.map((keyword, index) => (
             <input

@@ -16,9 +16,13 @@ interface Ad {
 
 interface InstagramComponentProps {
   ad: Ad;
+  onDelete: (deletedId: number) => void; // ✅ Add the prop
 }
 
-const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
+const InstagramComponent: React.FC<InstagramComponentProps> = ({
+  ad,
+  onDelete,
+}) => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -42,16 +46,19 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
       );
       const data = await response.json();
       console.log(data);
-      setShowDeletePopup(false);
-      setConfirmDeletedPopup(true);
-      // Optionally navigate or refresh
+      if (data.success) {
+        setShowDeletePopup(false);
+        setConfirmDeletedPopup(true);
+        onDelete(id); // ✅ Call the onDelete callback to update state in HomePage
+      } else {
+        console.error("Delete failed:", data.message);
+      }
     } catch (error) {
       console.error("Error deleting ad:", error);
     }
   };
 
   const handleConfirmDeletedPopup = (trueBool: boolean) => {
-    console.log("handleConfirmDeletedPopup ", trueBool);
     setConfirmDeletedPopup(false);
   };
 
@@ -79,7 +86,6 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({ ad }) => {
         </div>
       </div>
 
-      {/* Popup rendered outside the container */}
       {showDeletePopup && (
         <div className="delete-popup">
           <p>Are you sure you want to delete this ad?</p>
