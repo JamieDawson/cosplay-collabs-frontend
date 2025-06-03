@@ -27,6 +27,7 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
   const navigate = useNavigate();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [confirmDeletedPopup, setConfirmDeletedPopup] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<number | null>(null);
 
   const goToUpdateForm = (ad: Ad) => {
     navigate("/UpdatePostForm", { state: { ad } });
@@ -49,7 +50,7 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
       if (data.success) {
         setShowDeletePopup(false);
         setConfirmDeletedPopup(true);
-        onDelete(id); // ✅ Call the onDelete callback to update state in HomePage
+        setAdToDelete(id); // 🆕 save the ID, but don't remove it from state yet
       } else {
         console.error("Delete failed:", data.message);
       }
@@ -58,8 +59,12 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
     }
   };
 
-  const handleConfirmDeletedPopup = (trueBool: boolean) => {
+  const handleConfirmDeletedPopup = () => {
     setConfirmDeletedPopup(false);
+    if (adToDelete !== null) {
+      onDelete(adToDelete);
+      setAdToDelete(null);
+    }
   };
 
   return (
@@ -93,10 +98,11 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
           <button onClick={() => setShowDeletePopup(false)}>Cancel</button>
         </div>
       )}
+
       {confirmDeletedPopup && (
         <div className="delete-popup">
           <p>Your ad has been deleted!</p>
-          <button onClick={() => handleConfirmDeletedPopup(true)}>Close</button>
+          <button onClick={handleConfirmDeletedPopup}>Close</button>
         </div>
       )}
     </>
