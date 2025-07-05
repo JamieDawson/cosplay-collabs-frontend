@@ -17,11 +17,13 @@ interface Ad {
 interface InstagramComponentProps {
   ad: Ad;
   onDelete: (deletedId: number) => void;
+  onTagClick?: (tag: string) => void; // ✅ optional prop
 }
 
 const InstagramComponent: React.FC<InstagramComponentProps> = ({
   ad,
   onDelete,
+  onTagClick,
 }) => {
   const { user } = useAuth0();
   const navigate = useNavigate();
@@ -34,8 +36,12 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
   };
 
   const goToTagPage = (keyword: string) => {
-    const encodedKeyword = encodeURIComponent(keyword);
-    navigate(`/tags-page?q=${encodedKeyword}`);
+    if (onTagClick) {
+      onTagClick(keyword); // ✅ Notify parent
+    } else {
+      const encodedKeyword = encodeURIComponent(keyword);
+      navigate(`/tags-page?q=${encodedKeyword}`);
+    }
   };
 
   const handleDeleteAd = async (id: number) => {
@@ -47,11 +53,10 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
         }
       );
       const data = await response.json();
-      console.log(data);
       if (data.success) {
         setShowDeletePopup(false);
         setConfirmDeletedPopup(true);
-        setAdToDelete(id); // 🆕 save the ID, but don't remove it from state yet
+        setAdToDelete(id);
       } else {
         console.error("Delete failed:", data.message);
       }

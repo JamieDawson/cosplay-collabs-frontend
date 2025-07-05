@@ -119,7 +119,7 @@ const CreateAdForm: React.FC = () => {
         </div>
       )}
       {!isAuthenticated ? (
-        <h2>Please log in</h2>
+        <h2>You need an account to create an ad.</h2>
       ) : (
         <form onSubmit={handleSubmit}>
           <input

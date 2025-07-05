@@ -128,7 +128,9 @@ const UpdatePostForm = () => {
   return (
     <>
       {!isAuthenticated ? (
-        <div>You don't have permission to update this. Please log in</div>
+        <div>
+          You don't have permission to update this ad. Log in to update the ad.
+        </div>
       ) : (
         <>
           <div>

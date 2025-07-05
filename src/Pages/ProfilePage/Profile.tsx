@@ -53,11 +53,10 @@ function Profile() {
    * - If user is viewing their own profile, we'll also update the context username.
    */
   useEffect(() => {
-    if (!isAuthenticated || !user || !username) return;
+    if (!username) return;
 
     const fetchUserData = async () => {
       try {
-        // Call backend API to get user data by username (PostgreSQL should use index on username)
         const response = await axios.get(
           `http://localhost:3000/api/users/username/${encodeURIComponent(
             username
@@ -66,15 +65,19 @@ function Profile() {
         const userData: CustomUserData = response.data.user;
         setCustomUserData(userData);
 
-        // If the profile viewed belongs to the logged-in user (matching auth0_id), set context username
-        if (userData?.auth0_id === user.sub) {
-          setUsername(userData.username || ""); // Optional: fallback if username is null
+        // Only set username if logged in and it's the user's own profile
+        if (isAuthenticated && user && userData?.auth0_id === user.sub) {
+          setUsername(userData.username || "");
         }
       } catch (error: any) {
         console.error("Error fetching custom user data:", error);
 
-        // If username not found (404) and it's the logged-in user's profile, redirect to complete-profile
-        if (error.response?.status === 404 && user?.nickname === username) {
+        // If not found and it's the logged-in user's own profile
+        if (
+          error.response?.status === 404 &&
+          isAuthenticated &&
+          user?.nickname === username
+        ) {
           navigate("/complete-profile");
         }
       } finally {
@@ -153,17 +156,19 @@ function Profile() {
   };
 
   // Handle loading state
-  if (!isAuthenticated) return <div>Please log in.</div>;
+  //if (!isAuthenticated) return <div>Please log in.</div>;
   if (loading) return <div>Loading profile...</div>;
 
   return (
     <div>
-      <h2>Welcome, {customUserData?.full_name || user?.name || "unknown"}</h2>
-      <p>Custom Username: {customUserData?.username || "Not set"}</p>
-      <p>
-        Your unique ID is: {customUserData?.auth0_id || user?.sub || "unknown"}
-      </p>
-      <p>Your email is: {customUserData?.email || user?.email || "unknown"}</p>
+      <h2>
+        {isAuthenticated && customUserData?.auth0_id === user?.sub && (
+          <p>Welcome, {customUserData?.full_name || user?.name || "unknown"}</p>
+        )}
+      </h2>
+      <p>Username: {customUserData?.username || "Not set"}</p>
+      <p>ID: {customUserData?.auth0_id || user?.sub || "unknown"}</p>
+      <p>Email: {customUserData?.email || user?.email || "unknown"}</p>
 
       {/* Render user's ads */}
       {ads.map((ad) => (

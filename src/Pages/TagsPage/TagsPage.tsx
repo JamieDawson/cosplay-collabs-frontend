@@ -14,7 +14,7 @@ interface Ad {
   city?: string;
 }
 
-// ✅ Normalization function outside the component
+// ✅ Normalize tag globally
 const normalizeTag = (tag: string) => tag.toLowerCase().replace(/\s+/g, "");
 
 const TagsPage = () => {
@@ -52,7 +52,13 @@ const TagsPage = () => {
     e.preventDefault();
     const normalized = normalizeTag(typedTag);
     setSearchParams({ q: normalized });
-    setTypedTag(typedTag); // Optional: keeps original display
+  };
+
+  // ✅ When a tag is clicked, update search and input field
+  const handleTagClick = (tag: string) => {
+    setTypedTag(tag); // Display original tag
+    const normalized = normalizeTag(tag);
+    setSearchParams({ q: normalized }); // Trigger search
   };
 
   return (
@@ -78,6 +84,7 @@ const TagsPage = () => {
               key={ad.id.toString()}
               ad={ad}
               onDelete={() => {}}
+              onTagClick={handleTagClick}
             />
           ))
         ) : (

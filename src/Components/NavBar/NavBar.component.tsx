@@ -10,7 +10,7 @@ import "./NavBar.css";
 const NavBar: React.FC = () => {
   const { user } = useAuth0();
   const { username } = useUser();
-  console.log(user);
+  console.log(JSON.stringify(user));
   return (
     <nav className="navbar">
       <div className="logo">
@@ -30,6 +30,11 @@ const NavBar: React.FC = () => {
         <li>
           <Link to="/about" className="nav-link">
             About
+          </Link>
+        </li>
+        <li>
+          <Link to="/tags-page" className="nav-link">
+            Search for ads
           </Link>
         </li>
         <li>
