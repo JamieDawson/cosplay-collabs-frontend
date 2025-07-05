@@ -14,6 +14,9 @@ interface Ad {
   city?: string;
 }
 
+// ✅ Normalization function outside the component
+const normalizeTag = (tag: string) => tag.toLowerCase().replace(/\s+/g, "");
+
 const TagsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -24,9 +27,9 @@ const TagsPage = () => {
   useEffect(() => {
     const fetchAds = async () => {
       if (!queryKeyword) return;
-      const cleanTag = decodeURIComponent(queryKeyword)
-        .replace(/^#/, "")
-        .toLowerCase();
+
+      const cleanTag = normalizeTag(decodeURIComponent(queryKeyword));
+
       try {
         const response = await fetch(
           `http://localhost:3000/api/ads/ads-by-tag/${cleanTag}`
@@ -47,8 +50,9 @@ const TagsPage = () => {
 
   const lookupTag = (e: React.FormEvent) => {
     e.preventDefault();
-    const tag = typedTag.startsWith("#") ? typedTag : `#${typedTag}`;
-    setSearchParams({ q: tag });
+    const normalized = normalizeTag(typedTag);
+    setSearchParams({ q: normalized });
+    setTypedTag(typedTag); // Optional: keeps original display
   };
 
   return (

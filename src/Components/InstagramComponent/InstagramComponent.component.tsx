@@ -34,9 +34,7 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
   };
 
   const goToTagPage = (keyword: string) => {
-    const encodedKeyword = encodeURIComponent(
-      keyword.startsWith("#") ? keyword : `#${keyword}`
-    );
+    const encodedKeyword = encodeURIComponent(keyword);
     navigate(`/tags-page?q=${encodedKeyword}`);
   };
 
