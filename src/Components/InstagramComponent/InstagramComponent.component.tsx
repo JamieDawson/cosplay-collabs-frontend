@@ -16,7 +16,7 @@ interface Ad {
 
 interface InstagramComponentProps {
   ad: Ad;
-  onDelete: (deletedId: number) => void; // ✅ Add the prop
+  onDelete: (deletedId: number) => void;
 }
 
 const InstagramComponent: React.FC<InstagramComponentProps> = ({
@@ -34,7 +34,10 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
   };
 
   const goToTagPage = (keyword: string) => {
-    navigate("/tags-page", { state: { keyword } });
+    const encodedKeyword = encodeURIComponent(
+      keyword.startsWith("#") ? keyword : `#${keyword}`
+    );
+    navigate(`/tags-page?q=${encodedKeyword}`);
   };
 
   const handleDeleteAd = async (id: number) => {
