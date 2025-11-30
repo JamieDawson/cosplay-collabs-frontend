@@ -101,7 +101,13 @@ function Profile() {
         );
         const data = await response.json();
         if (data.success) {
-          setProfileAds(data.data);
+          // Sort ads by created_at date, newest first
+          const sortedAds = [...data.data].sort((a, b) => {
+            const dateA = new Date(a.created_at).getTime();
+            const dateB = new Date(b.created_at).getTime();
+            return dateB - dateA; // Descending order (newest first)
+          });
+          setProfileAds(sortedAds);
         }
       } catch (error) {
         console.error("Error fetching ads:", error);
@@ -166,6 +172,13 @@ function Profile() {
       </div>
     );
 
+  const breakpointColumnsObj = {
+    default: 3,
+    1024: 3,
+    768: 2,
+    640: 1,
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -205,7 +218,7 @@ function Profile() {
 
         {/* Render user's ads */}
         <Masonry
-          breakpointCols={{ default: 3, 1024: 3, 768: 2, 640: 1 }}
+          breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
