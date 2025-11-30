@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
 import axios from "axios";
 import { useUser } from "../../UserContext";
+import Masonry from "react-masonry-css";
 
 // Define the interface for custom user data from your PostgreSQL DB
 interface CustomUserData {
@@ -203,11 +204,15 @@ function Profile() {
         </div>
 
         {/* Render user's ads */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+        <Masonry
+          breakpointCols={{ default: 3, 1024: 3, 768: 2, 640: 1 }}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
           {ads.map((ad) => (
             <InstagramComponent key={ad._id} ad={ad} onDelete={() => {}} />
           ))}
-        </div>
+        </Masonry>
       </div>
 
       {finalWarningPopup && (

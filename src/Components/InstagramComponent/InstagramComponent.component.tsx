@@ -74,7 +74,7 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col w-full max-w-sm transition-transform hover:scale-[1.02] hover:shadow-xl break-inside-avoid mb-8">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col w-full max-w-sm transition-transform hover:scale-[1.02] hover:shadow-xl">
         {user?.sub === ad.user_id && (
           <div className="flex gap-2 p-3 justify-end">
             <button

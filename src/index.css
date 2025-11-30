@@ -43,3 +43,19 @@
     page-break-inside: avoid;
   }
 }
+
+/* Masonry layout styles */
+.my-masonry-grid {
+  display: flex;
+  margin-left: -2rem;
+  width: auto;
+}
+
+.my-masonry-grid_column {
+  padding-left: 2rem;
+  background-clip: padding-box;
+}
+
+.my-masonry-grid_column > div {
+  margin-bottom: 2rem;
+}

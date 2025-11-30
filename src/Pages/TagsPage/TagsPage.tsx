@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
+import Masonry from "react-masonry-css";
 
 interface Ad {
   id: number;
@@ -92,7 +93,11 @@ const TagsPage = () => {
         </form>
 
         {ads.length > 0 ? (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+          <Masonry
+            breakpointCols={{ default: 3, 1024: 3, 768: 2, 640: 1 }}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
             {ads.map((ad) => (
               <InstagramComponent
                 key={ad.id.toString()}
@@ -101,7 +106,7 @@ const TagsPage = () => {
                 onTagClick={handleTagClick}
               />
             ))}
-          </div>
+          </Masonry>
         ) : (
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
             <p className="text-xl text-gray-600">No ads found for this tag.</p>

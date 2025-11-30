@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
+import Masonry from "react-masonry-css";
 
 interface Ad {
   _id: string;
@@ -40,16 +41,29 @@ const HomePage: React.FC = () => {
     setFrontPageAds((prevAds) => prevAds.filter((ad) => ad.id !== deletedId));
   };
 
+  const breakpointColumnsObj = {
+    default: 3,
+    1024: 3,
+    768: 2,
+    640: 1
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
-      <div className="max-w-7xl mx-auto columns-1 md:columns-2 lg:columns-3 gap-8">
-        {frontPageAds.map((ad) => (
-          <InstagramComponent
-            key={ad.id.toString()}
-            ad={ad}
-            onDelete={removeAdFromFrontPage}
-          />
-        ))}
+      <div className="max-w-7xl mx-auto">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {frontPageAds.map((ad) => (
+            <InstagramComponent
+              key={ad.id.toString()}
+              ad={ad}
+              onDelete={removeAdFromFrontPage}
+            />
+          ))}
+        </Masonry>
       </div>
     </div>
   );

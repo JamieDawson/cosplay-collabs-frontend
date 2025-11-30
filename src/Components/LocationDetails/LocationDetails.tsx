@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import InstagramComponent from "../InstagramComponent/InstagramComponent.component";
+import Masonry from "react-masonry-css";
 
 interface Ad {
   _id: string;
@@ -69,7 +70,11 @@ const LocationDetails: React.FC = () => {
             <p className="text-xl text-gray-600">No ads found for {city}.</p>
           </div>
         ) : (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+          <Masonry
+            breakpointCols={{ default: 3, 1024: 3, 768: 2, 640: 1 }}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
             {ads.map((ad) => (
               <InstagramComponent
                 key={ad.id.toString()}
@@ -77,7 +82,7 @@ const LocationDetails: React.FC = () => {
                 onDelete={() => {}}
               />
             ))}
-          </div>
+          </Masonry>
         )}
       </div>
     </div>
