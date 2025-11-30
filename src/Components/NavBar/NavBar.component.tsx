@@ -54,7 +54,7 @@ const NavBar: React.FC = () => {
               to="/tags-page"
               className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
             >
-              Search for ads
+              Search tags
             </Link>
           </li>
           <li>

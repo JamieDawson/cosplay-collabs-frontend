@@ -107,11 +107,11 @@ const TagsPage = () => {
               />
             ))}
           </Masonry>
-        ) : (
+        ) : queryKeyword ? (
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
             <p className="text-xl text-gray-600">No ads found for this tag.</p>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
