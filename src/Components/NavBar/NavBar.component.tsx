@@ -20,10 +20,18 @@ const NavBar: React.FC = () => {
             Cosplay Collabs
           </Link>
         </div>
-        {user && (
-          <h4 className="m-0 text-sm md:text-base">Hello, {username}</h4>
-        )}
         <ul className="flex flex-wrap gap-4 md:gap-5 list-none m-0 p-0 pr-4 md:pr-8 items-center">
+          {user && (
+            <li className="hidden md:block">
+              <Link
+                to={`/profile/${username}`}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-full text-white text-sm font-medium transition-colors shadow-md"
+              >
+                <span>👤</span>
+                <span>{username}</span>
+              </Link>
+            </li>
+          )}
           <li>
             <SignUpButton />
           </li>
@@ -36,7 +44,7 @@ const NavBar: React.FC = () => {
           <li>
             <Link
               to="/"
-              className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
+              className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
             >
               Home
             </Link>
@@ -44,15 +52,23 @@ const NavBar: React.FC = () => {
           <li>
             <Link
               to="/about"
-              className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
+              className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
             >
               About
             </Link>
           </li>
           <li>
             <Link
+              to="/places"
+              className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
+            >
+              Places
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/tags-page"
-              className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
+              className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
             >
               Search tags
             </Link>
@@ -60,27 +76,22 @@ const NavBar: React.FC = () => {
           <li>
             <Link
               to="/add-post"
-              className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
+              className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
             >
               Add Post
             </Link>
           </li>
-          <li>
-            <Link
-              to="/places"
-              className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
-            >
-              Places
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={`/profile/${username}`}
-              className="text-white hover:text-cyan-400 transition-colors font-medium text-sm md:text-base"
-            >
-              Profile
-            </Link>
-          </li>
+
+          {user && (
+            <li>
+              <Link
+                to={`/profile/${username}`}
+                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
+              >
+                Profile
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

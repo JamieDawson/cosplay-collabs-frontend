@@ -9,7 +9,12 @@ function LoginButton() {
   };
 
   return !isAuthenticated ? (
-    <button onClick={handleClick}>Log in</button>
+    <button 
+      onClick={handleClick}
+      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm transition-colors shadow-md"
+    >
+      Log in
+    </button>
   ) : null;
 }
 
