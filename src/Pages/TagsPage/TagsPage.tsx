@@ -91,22 +91,22 @@ const TagsPage = () => {
           </div>
         </form>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-          {ads.length > 0 ? (
-            ads.map((ad) => (
+        {ads.length > 0 ? (
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+            {ads.map((ad) => (
               <InstagramComponent
                 key={ad.id.toString()}
                 ad={ad}
                 onDelete={() => {}}
                 onTagClick={handleTagClick}
               />
-            ))
-          ) : (
-            <div className="col-span-full bg-white rounded-2xl shadow-lg p-8 text-center">
-              <p className="text-xl text-gray-600">No ads found for this tag.</p>
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
+            <p className="text-xl text-gray-600">No ads found for this tag.</p>
+          </div>
+        )}
       </div>
     </div>
   );

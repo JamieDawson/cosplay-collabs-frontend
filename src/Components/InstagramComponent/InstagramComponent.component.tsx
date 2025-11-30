@@ -74,16 +74,16 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col w-full max-w-sm min-h-[500px] transition-transform hover:scale-[1.02] hover:shadow-xl">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col w-full max-w-sm transition-transform hover:scale-[1.02] hover:shadow-xl break-inside-avoid mb-8">
         {user?.sub === ad.user_id && (
           <div className="flex gap-2 p-3 justify-end">
-            <button 
+            <button
               onClick={() => setShowDeletePopup(true)}
               className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
             >
               Delete
             </button>
-            <button 
+            <button
               onClick={() => goToUpdateForm(ad)}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
             >
@@ -92,20 +92,24 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
           </div>
         )}
 
-        <div className="flex justify-center items-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 min-h-[400px]">
+        <div className="flex justify-center items-center p-4 bg-gradient-to-br from-purple-50 to-pink-50">
           <div className="w-full max-w-[350px] transform scale-90 origin-center">
             <InstagramEmbed url={ad.instagram_post_url} />
           </div>
         </div>
-        
-        <div className="p-4 flex flex-col gap-3 flex-grow">
-          <h3 className="text-xl font-bold text-gray-800 text-center">{ad.title}</h3>
-          <p className="text-gray-600 text-sm leading-relaxed text-center flex-grow">{ad.description}</p>
-          <div className="flex flex-wrap gap-2 justify-center mt-auto">
+
+        <div className="p-4 flex flex-col gap-3">
+          <h3 className="text-xl font-bold text-gray-800 text-center">
+            {ad.title}
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed text-center">
+            {ad.description}
+          </p>
+          <div className="flex flex-wrap gap-2 justify-center">
             {ad.keywords.map((keyword, index) =>
               keyword.length > 0 ? (
-                <button 
-                  onClick={() => goToTagPage(keyword)} 
+                <button
+                  onClick={() => goToTagPage(keyword)}
                   key={index}
                   className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium hover:bg-purple-200 transition-colors"
                 >
@@ -120,15 +124,17 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
       {showDeletePopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
-            <p className="text-lg font-semibold text-gray-800 mb-4 text-center">Are you sure you want to delete this ad?</p>
+            <p className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Are you sure you want to delete this ad?
+            </p>
             <div className="flex gap-3 justify-center">
-              <button 
+              <button
                 onClick={() => handleDeleteAd(ad.id)}
                 className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
               >
                 Yes, Delete
               </button>
-              <button 
+              <button
                 onClick={() => setShowDeletePopup(false)}
                 className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-medium"
               >
@@ -142,9 +148,11 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
       {confirmDeletedPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
-            <p className="text-lg font-semibold text-gray-800 mb-4 text-center">Your ad has been deleted!</p>
+            <p className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Your ad has been deleted!
+            </p>
             <div className="flex justify-center">
-              <button 
+              <button
                 onClick={handleConfirmDeletedPopup}
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
               >

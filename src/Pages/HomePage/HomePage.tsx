@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto justify-items-center">
+      <div className="max-w-7xl mx-auto columns-1 md:columns-2 lg:columns-3 gap-8">
         {frontPageAds.map((ad) => (
           <InstagramComponent
             key={ad.id.toString()}
