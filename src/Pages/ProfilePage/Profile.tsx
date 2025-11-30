@@ -5,7 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
 import axios from "axios";
 import { useUser } from "../../UserContext";
-import "../ProfilePage/Profile.css";
 
 // Define the interface for custom user data from your PostgreSQL DB
 interface CustomUserData {
@@ -157,62 +156,106 @@ function Profile() {
 
   // Handle loading state
   //if (!isAuthenticated) return <div>Please log in.</div>;
-  if (loading) return <div>Loading profile...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 flex items-center justify-center">
+        <div className="text-xl font-semibold text-gray-700">
+          Loading profile...
+        </div>
+      </div>
+    );
 
   return (
-    <div>
-      <h2>
-        {isAuthenticated && customUserData?.auth0_id === user?.sub && (
-          <p>Welcome, {customUserData?.full_name || user?.name || "unknown"}</p>
-        )}
-      </h2>
-      <p>Username: {customUserData?.username || "Not set"}</p>
-      <p>ID: {customUserData?.auth0_id || user?.sub || "unknown"}</p>
-      <p>Email: {customUserData?.email || user?.email || "unknown"}</p>
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Profile Header */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            {isAuthenticated && customUserData?.auth0_id === user?.sub && (
+              <span>
+                Welcome, {customUserData?.full_name || user?.name || "unknown"}
+              </span>
+            )}
+          </h2>
+          <div className="space-y-2 text-gray-600">
+            <p className="text-lg">
+              <span className="font-semibold">Username:</span>{" "}
+              {customUserData?.username || "Not set"}
+            </p>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">ID:</span>{" "}
+              {customUserData?.auth0_id || user?.sub || "unknown"}
+            </p>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">Email:</span>{" "}
+              {customUserData?.email || user?.email || "unknown"}
+            </p>
+          </div>
 
-      {/* Render user's ads */}
-      {ads.map((ad) => (
-        <InstagramComponent key={ad._id} ad={ad} onDelete={() => {}} />
-      ))}
+          {customUserData?.auth0_id === user?.sub && (
+            <button
+              onClick={showFinalWarning}
+              className="mt-6 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+            >
+              Delete your profile
+            </button>
+          )}
+        </div>
 
-      {/* Delete profile button and warning */}
-
-      {customUserData?.auth0_id === user?.sub ? (
-        <button onClick={showFinalWarning}>Delete your profile</button>
-      ) : (
-        ""
-      )}
+        {/* Render user's ads */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          {ads.map((ad) => (
+            <InstagramComponent key={ad._id} ad={ad} onDelete={() => {}} />
+          ))}
+        </div>
+      </div>
 
       {finalWarningPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <button className="xbutton" onClick={showFinalWarning}>
-              X
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4 relative">
+            <button
+              className="absolute top-4 right-4 bg-gray-200 hover:bg-gray-300 rounded-lg p-2 transition-colors text-gray-700 font-bold"
+              onClick={showFinalWarning}
+            >
+              ✕
             </button>
-            <p>
+            <p className="text-lg font-semibold text-gray-800 mb-6 text-center">
               Are you sure you want to delete your profile? This cannot be
               reversed.
             </p>
-            <button
-              className="bothButtons"
-              style={{ backgroundColor: "red" }}
-              onClick={deleteCurrentUserProfile}
-            >
-              Yes, delete it
-            </button>
-            <button className="bothButtons" onClick={showFinalWarning}>
-              No, keep it
-            </button>
+            <div className="flex gap-3 justify-center">
+              <button
+                className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+                onClick={deleteCurrentUserProfile}
+              >
+                Yes, delete it
+              </button>
+              <button
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                onClick={showFinalWarning}
+              >
+                No, keep it
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Post-deletion popup */}
       {popUpAfterDeleting && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <p>Your account has been deleted.</p>
-            <button onClick={sendToHomePageAfterDeletingUser}>Close</button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <p className="text-lg font-semibold text-gray-800 mb-6 text-center">
+              Your account has been deleted.
+            </p>
+            <div className="flex justify-center">
+              <button
+                onClick={sendToHomePageAfterDeletingUser}
+                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

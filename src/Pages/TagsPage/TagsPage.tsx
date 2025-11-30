@@ -62,36 +62,53 @@ const TagsPage = () => {
   };
 
   return (
-    <>
-      <div>
-        <h2>Tags Page</h2>
-        <h3>Selected keyword: {decodeURIComponent(queryKeyword)}</h3>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Tags Page</h2>
+          {queryKeyword && (
+            <h3 className="text-xl text-gray-600">Selected keyword: {decodeURIComponent(queryKeyword)}</h3>
+          )}
+        </div>
 
-      <form onSubmit={lookupTag}>
-        <input
-          value={typedTag}
-          onChange={(e) => handleTagChange(e.target.value)}
-          placeholder="Search by tag"
-        />
-        <button type="submit">Search Tag</button>
-      </form>
-
-      <div className="ads-list">
-        {ads.length > 0 ? (
-          ads.map((ad) => (
-            <InstagramComponent
-              key={ad.id.toString()}
-              ad={ad}
-              onDelete={() => {}}
-              onTagClick={handleTagClick}
+        <form 
+          onSubmit={lookupTag}
+          className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8"
+        >
+          <div className="flex flex-col md:flex-row gap-4">
+            <input
+              value={typedTag}
+              onChange={(e) => handleTagChange(e.target.value)}
+              placeholder="Search by tag"
+              className="flex-1 p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 text-sm md:text-base"
             />
-          ))
-        ) : (
-          <p>No ads found for this tag.</p>
-        )}
+            <button 
+              type="submit"
+              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm md:text-base"
+            >
+              Search Tag
+            </button>
+          </div>
+        </form>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          {ads.length > 0 ? (
+            ads.map((ad) => (
+              <InstagramComponent
+                key={ad.id.toString()}
+                ad={ad}
+                onDelete={() => {}}
+                onTagClick={handleTagClick}
+              />
+            ))
+          ) : (
+            <div className="col-span-full bg-white rounded-2xl shadow-lg p-8 text-center">
+              <p className="text-xl text-gray-600">No ads found for this tag.</p>
+            </div>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

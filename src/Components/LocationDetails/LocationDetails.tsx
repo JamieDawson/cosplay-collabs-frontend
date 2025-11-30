@@ -48,25 +48,38 @@ const LocationDetails: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>
-        Details for {city}, {state}, {country}
-      </h1>
-      <Link to="/places">
-        <button type="button">Back to Places</button>
-      </Link>
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            Details for {city}, {state}, {country}
+          </h1>
+          <Link to="/places">
+            <button 
+              type="button"
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+            >
+              Back to Places
+            </button>
+          </Link>
+        </div>
 
-      {ads.length === 0 ? (
-        <p>No ads found for {city}.</p>
-      ) : (
-        ads.map((ad) => (
-          <InstagramComponent
-            key={ad.id.toString()}
-            ad={ad}
-            onDelete={() => {}}
-          />
-        ))
-      )}
+        {ads.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
+            <p className="text-xl text-gray-600">No ads found for {city}.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {ads.map((ad) => (
+              <InstagramComponent
+                key={ad.id.toString()}
+                ad={ad}
+                onDelete={() => {}}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import InstagramComponent from "../../Components/InstagramComponent/InstagramComponent.component";
-import "./HomePage.css";
 
 interface Ad {
   _id: string;
@@ -42,14 +41,16 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="instagram-grid">
-      {frontPageAds.map((ad) => (
-        <InstagramComponent
-          key={ad.id.toString()}
-          ad={ad}
-          onDelete={removeAdFromFrontPage} //
-        />
-      ))}
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-blue-50 py-8 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto justify-items-center">
+        {frontPageAds.map((ad) => (
+          <InstagramComponent
+            key={ad.id.toString()}
+            ad={ad}
+            onDelete={removeAdFromFrontPage}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { InstagramEmbed } from "react-social-media-embed";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import "./InstagramComponent.css";
 
 interface Ad {
   _id?: string;
@@ -75,40 +74,84 @@ const InstagramComponent: React.FC<InstagramComponentProps> = ({
 
   return (
     <>
-      <div className="instagram-item">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col w-full max-w-sm min-h-[500px] transition-transform hover:scale-[1.02] hover:shadow-xl">
         {user?.sub === ad.user_id && (
-          <>
-            <button onClick={() => setShowDeletePopup(true)}>Delete</button>
-            <button onClick={() => goToUpdateForm(ad)}>Update</button>
-          </>
+          <div className="flex gap-2 p-3 justify-end">
+            <button 
+              onClick={() => setShowDeletePopup(true)}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+            >
+              Delete
+            </button>
+            <button 
+              onClick={() => goToUpdateForm(ad)}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+            >
+              Update
+            </button>
+          </div>
         )}
 
-        <InstagramEmbed url={ad.instagram_post_url} />
-        <div className="instagram-item-title">{ad.title}</div>
-        <div className="instagram-item-description">{ad.description}</div>
-        <div className="instagram-item-tags">
-          {ad.keywords.map((keyword, index) =>
-            keyword.length > 0 ? (
-              <button onClick={() => goToTagPage(keyword)} key={index}>
-                {keyword}
-              </button>
-            ) : null
-          )}
+        <div className="flex justify-center items-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 min-h-[400px]">
+          <div className="w-full max-w-[350px] transform scale-90 origin-center">
+            <InstagramEmbed url={ad.instagram_post_url} />
+          </div>
+        </div>
+        
+        <div className="p-4 flex flex-col gap-3 flex-grow">
+          <h3 className="text-xl font-bold text-gray-800 text-center">{ad.title}</h3>
+          <p className="text-gray-600 text-sm leading-relaxed text-center flex-grow">{ad.description}</p>
+          <div className="flex flex-wrap gap-2 justify-center mt-auto">
+            {ad.keywords.map((keyword, index) =>
+              keyword.length > 0 ? (
+                <button 
+                  onClick={() => goToTagPage(keyword)} 
+                  key={index}
+                  className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium hover:bg-purple-200 transition-colors"
+                >
+                  #{keyword}
+                </button>
+              ) : null
+            )}
+          </div>
         </div>
       </div>
 
       {showDeletePopup && (
-        <div className="delete-popup">
-          <p>Are you sure you want to delete this ad?</p>
-          <button onClick={() => handleDeleteAd(ad.id)}>Yes, Delete</button>
-          <button onClick={() => setShowDeletePopup(false)}>Cancel</button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
+            <p className="text-lg font-semibold text-gray-800 mb-4 text-center">Are you sure you want to delete this ad?</p>
+            <div className="flex gap-3 justify-center">
+              <button 
+                onClick={() => handleDeleteAd(ad.id)}
+                className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+              >
+                Yes, Delete
+              </button>
+              <button 
+                onClick={() => setShowDeletePopup(false)}
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
       {confirmDeletedPopup && (
-        <div className="delete-popup">
-          <p>Your ad has been deleted!</p>
-          <button onClick={handleConfirmDeletedPopup}>Close</button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
+            <p className="text-lg font-semibold text-gray-800 mb-4 text-center">Your ad has been deleted!</p>
+            <div className="flex justify-center">
+              <button 
+                onClick={handleConfirmDeletedPopup}
+                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </>
